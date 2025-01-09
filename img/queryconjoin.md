@@ -60,24 +60,40 @@ ORDER BY
 -------
 5. Selezionare tutti i corsi di laurea con i relativi corsi e insegnanti
 ------
-SELECT * 
+SELECT 
+`degrees`.*,
+`courses`.*,
+`teachers`.* 
 FROM `degrees`
+
 JOIN `courses`
-ON `degrees`.`department_id`=`courses`.`id`
+ON `courses`.`degree_id`=`degrees`.`id`
+
+JOIN `course_teacher`
+ON `course_teacher`.`course_id`=`courses`.`id`
+
 JOIN `teachers`
-ON `courses`.`degree_id`=`teachers`.`id`;
+ON `course_teacher`.`teacher_id`=`teachers`.`id`;
 
 
 ------
 6. Selezionare tutti i docenti che insegnano nel Dipartimento di
 Matematica (54)
-SELECT COUNT(*)
- FROM `teachers`
- JOIN `courses`
- ON  `teachers`.`id`=`courses`.`id`
- JOIN `degrees`
- ON `courses`.`degree_id` =`degrees`.`id`
- JOIN `departments`
- ON `degrees`.`department_id`= `departments`.`id`
- WHERE `departments`.`name` = "matematica"
- GROUP BY `teachers`.`id` ;
+SELECT distinct
+`departments`.*,
+
+`teachers`.* 
+FROM `degrees`
+
+JOIN `courses`
+ON `courses`.`degree_id`=`degrees`.`id`
+
+JOIN `course_teacher`
+ON `course_teacher`.`course_id`=`courses`.`id`
+
+JOIN `teachers`
+ON `course_teacher`.`teacher_id`=`teachers`.`id`
+JOIN `departments`
+ON `degrees`.`department_id` = `departments`.`id`
+WHERE departments.name LIKE "%matematica%"
+;

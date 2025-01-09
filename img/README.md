@@ -2,7 +2,7 @@
 
 1. Selezionare tutti gli studenti nati nel 1990 (160)
 ---------
-SELECT SELECT COUNT(*) AS totale_studenti90
+ SELECT COUNT(*) AS totale_studenti90
 FROM `students`
 WHERE YEAR(date_of_birth) = 1990;
 --------
@@ -18,9 +18,8 @@ WHERE `cfu` > 10;
 -------
 3. Selezionare tutti gli studenti che hanno più di 30 anni
 ------
-SELECT * 
-FROM students
-WHERE date_of_birth <= '1994-12-31';
+SELECT *, timestampdiff(year, `date_of_birth`, CURDATE()) as years
+FROM students;
 
 
 ------
@@ -30,8 +29,8 @@ laurea (286)
 
 SELECT COUNT(*) AS totale_primo_semestre_primo_anno
 FROM `courses`
-WHERE anno = 1  -- Primo anno
-AND semestre = 1;
+WHERE `year` = 1  
+AND `period` = "I semestre";
 
 
 --------
@@ -40,8 +39,8 @@ AND semestre = 1;
 -----
 SELECT COUNT(*) AS totale_appelli_pomeriggio
 FROM `exams`
-WHERE DATE(`date`) = '2020-06-20'
-AND TIME(`hour`) > '14:00:00';
+WHERE `date` = '2020-06-20'
+AND `hour` >= "14:00:00";
 -------
 
 
@@ -50,7 +49,7 @@ AND TIME(`hour`) > '14:00:00';
 -----
 SELECT COUNT(*) AS corsi_magistrali 
 FROM university.degrees
-WHERE(`level`) = "magistrale";
+WHERE `level` = "magistrale";
 
 
 ------
